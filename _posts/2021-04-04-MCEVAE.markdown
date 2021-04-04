@@ -5,6 +5,9 @@ date:   2021-04-04 02:33:41 -0500
 categories: jekyll update
 ---
 
+>  Learning disentangled representation of high-dimensional data is essential for solving more complex control problems. MCE-VAE introduces a hierarchical variational autoencoder that learns to separate invariant and equivariant components.
+
+<!--excerpt-->
 
 # Notation
 
