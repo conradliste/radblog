@@ -3,11 +3,13 @@ layout: post
 title:  "Multi-Clustering Equivariant Variational AutoEncoder (MCE-VAE)"
 date:   2021-04-04 02:33:41 -0500
 categories: jekyll update
+tags: ["vae", "disentangled-reps"]
 ---
 
->  Learning disentangled representation of high-dimensional data is essential for solving more complex control problems. MCE-VAE introduces a hierarchical variational autoencoder that learns to separate invariant and equivariant components.
+>  Learning disentangled representation of high-dimensional data is essential for solving high-dimensional control problems A hierarchical variational autoencoder that learns to separate invariant and equivariant components
 
 <!--excerpt-->
+
 
 # Notation
 
@@ -32,7 +34,7 @@ on image generation tasks and more recently
 expressive latent spaces that can encode the structure of the input data remains
 a difficult task. Much of research in VAEs hase been directed toward creating 
 *distentangled* latent spaces that encode each feature of $x$ into either narrowly
-defined variables or separate dimension of $z$. More formally, a vector representation
+defined variables or separate dimension of $$z$$. More formally, a vector representation
 is disentangled, if it can be decomposed into a number of subspaces, each one of which 
 is compatible with, and can be transformed independently by a unique symmetry 
 transformation [Higgins](https://arxiv.org/pdf/1812.02230.pdf). Multi-clustering
