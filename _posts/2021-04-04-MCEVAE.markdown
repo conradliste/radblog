@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Multi-Clustering Equivariant Variational AutoEncoder (MCE-VAE)"
+title:  "Multi-Clustering Equivariant Variational Autoencoder (MCE-VAE)"
 date:   2021-04-04 02:33:41 -0500
 categories: jekyll update
 tags: ["vae", "disentangled-reps"]
@@ -13,33 +13,41 @@ tags: ["vae", "disentangled-reps"]
 
 # Notation
 
+{: class="info"}
 | Symbol | Definition | 
-|-----------------------------------------|
+|------------------|-----------------------|
 | x | input vector |
-| dim(x) | Dimensions of any variable x |
-| $$\mu_z$$ | Latent mean vector |
-| $$\sigma_z$$ | Variance mean vector |
+| $$\mu_a$$ | Mean vector of any arbitrary variable $$a$$ |
+| $$\sigma_a$$ | Variance vector of any arbitrary variable $$a$$|
 | $$z_{aug} $$ | Augmented latent vector |
 | $$z_c $$ | Categorical latent vector | 
 | $$z$$ | Variational latent vector |
 | $$\tau$$ | Transformational latent vector |
+| $$q_{z_{aug}}(x)$$ | Deterministic encoder mapping: $$x \rightarrow z_{aug}$$ |
+| $$q_{z_c}(z_{aug})$$ | Probabilistic encoder mapping: $$z_{aug} \rightarrow \mu_{z_c}$$ and  $$\sigma_{z_c}$$ |
+| $$q_{z}(z_{aug})$$ | Probabilistic encoder mapping: $$z_{aug} \rightarrow \mu_{z}$$ and $$\sigma_{z}$$
+| $$q_{\tau}(z_{aug})$$ | Probabilistic encoder mapping: $$z_{aug}$$ $$\rightarrow$$ $$\mu_{\tau}$$ and $$\sigma_{\tau}$$ |
+| ---------- |  ---------|
 
 # Motivations
 
 Variational autoencoders (VAE) extend noraml autoencoders by encoding each input
-$x$ as a mean and variance in a low-dimensional latent
+$$x$$ as a mean and variance in a low-dimensional latent
 space. Although variational autoencoders (VAEs) have achieved impressive results
 on image generation tasks and more recently 
 [drug synthesis](https://pubs.acs.org/doi/10.1021/acscentsci.7b00572), crafting 
 expressive latent spaces that can encode the structure of the input data remains
 a difficult task. Much of research in VAEs hase been directed toward creating 
-*distentangled* latent spaces that encode each feature of $x$ into either narrowly
+*distentangled* latent spaces that encode each feature of $$x$$ into either narrowly
 defined variables or separate dimension of $$z$$. More formally, a vector representation
-is disentangled, if it can be decomposed into a number of subspaces, each one of which 
+is *disentangled*, if it can be decomposed into a number of subspaces, each one of which 
 is compatible with, and can be transformed independently by a unique symmetry 
-transformation [Higgins](https://arxiv.org/pdf/1812.02230.pdf). Multi-clustering
+transformation ([Higgins](https://arxiv.org/pdf/1812.02230.pdf)). Multi-clustering
 Equivariant Variational Autoencoder (MCE-VAE) attempts to craft a latent space
 that learns invariant and equivariant latent representations of dynamic data.
 
 # Methods
-The 
+For clarity, let us assume that the input dataset $$X = \{ x_0, x_1, ....x_N \}$$
+are each $$ 28 \times 28 $$ images from the MNIST digit set.
+The MCE-VAE consists of a four encoder functions. $$q_{z_{aug}}(x)$$ is a 
+deterministic encoder, implemented with ConvNets, that maps from the input $$x$$ to a single vector $$z_{z_{aug}}$$.

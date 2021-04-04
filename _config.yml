@@ -25,7 +25,6 @@ description: >- # this means to ignore newlines until "baseurl:"
  am interested in! I hope you enjoy!
 baseurl: "/radblog" # the subpath of your site, e.g. /blog
 url: "https://conradliste.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: conradliste
 github_username:  conradliste
 show_excerpts: true
 excerpt_separator: "<!--excerpt-->"
