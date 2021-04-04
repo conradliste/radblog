@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "Multi-Clustering Equivariant Variational AutoEncoder (MCE-VAE)"
+date:   2021-04-04 02:33:41 -0500
+categories: jekyll update
+---
+
+# Multi-Clustering Equivariant Varitional Autoencder (MCE-VAE)
+
+## Motivations
+
+Although variational autoencoders (VAEs) have achieved impressie results on image generation and more recently [drug synthesis](https://pubs.acs.org/doi/10.1021/acscentsci.7b00572).
+
+$$x + y  = z$$
