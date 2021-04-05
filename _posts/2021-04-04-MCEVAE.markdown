@@ -1,32 +1,38 @@
 ---
 layout: post
+commments: true
 title:  "Multi-Clustering Equivariant Variational Autoencoder (MCE-VAE)"
+author: "Conrad Li"
 date:   2021-04-04 02:33:41 -0500
-categories: jekyll update
-tags: ["vae", "disentangled-reps"]
+tags: vae disentangled-reps
 ---
 
 >  Learning disentangled representation of high-dimensional data is essential for solving high-dimensional control problems A hierarchical variational autoencoder that learns to separate invariant and equivariant components
 
 <!--excerpt-->
 
+{: class="table-of-content"}
+# Table of Contents
+* TOC
+{:toc}
 
 # Notation
 
 {: class="info"}
 | Symbol | Definition | 
 |------------------|-----------------------|
-| x | input vector |
+| x | Input vector |
 | $$\mu_a$$ | Mean vector of any arbitrary variable $$a$$ |
 | $$\sigma_a$$ | Variance vector of any arbitrary variable $$a$$|
+| $$ w $$ | Weight vector for Latent mixture of Gaussians|
 | $$z_{aug} $$ | Augmented latent vector |
 | $$z_c $$ | Categorical latent vector | 
 | $$z$$ | Variational latent vector |
 | $$\tau$$ | Transformational latent vector |
-| $$q_{z_{aug}}(x)$$ | Deterministic encoder mapping: $$x \rightarrow z_{aug}$$ |
-| $$q_{z_c}(z_{aug})$$ | Probabilistic encoder mapping: $$z_{aug} \rightarrow \mu_{z_c}$$ and  $$\sigma_{z_c}$$ |
-| $$q_{z}(z_{aug})$$ | Probabilistic encoder mapping: $$z_{aug} \rightarrow \mu_{z}$$ and $$\sigma_{z}$$
-| $$q_{\tau}(z_{aug})$$ | Probabilistic encoder mapping: $$z_{aug}$$ $$\rightarrow$$ $$\mu_{\tau}$$ and $$\sigma_{\tau}$$ |
+| $$q_{z_{aug}}(x)$$ | **Deterministic** encoder: $$x \rightarrow z_{aug}$$ |
+| $$q_{z_c}(z_{aug})$$ | **Probabilistic** encoder: $$z_{aug} \rightarrow \mu_{z_c}$$, $$\sigma_{z_c}$$, and $$w$$ |
+| $$q_{z}(z_{aug})$$ | **Probabilistic** encoder: $$z_{aug} \rightarrow \mu_{z}$$ and $$\sigma_{z}$$
+| $$q_{\tau}(z_{aug})$$ | **Probabilistic** encoder: $$z_{aug}$$ $$\rightarrow$$ $$\mu_{\tau}$$ and $$\sigma_{\tau}$$ |
 | ---------- |  ---------|
 
 # Motivations
@@ -49,5 +55,10 @@ that learns invariant and equivariant latent representations of dynamic data.
 # Methods
 For clarity, let us assume that the input dataset $$X = \{ x_0, x_1, ....x_N \}$$
 are each $$ 28 \times 28 $$ images from the MNIST digit set.
-The MCE-VAE consists of a four encoder functions. $$q_{z_{aug}}(x)$$ is a 
-deterministic encoder, implemented with ConvNets, that maps from the input $$x$$ to a single vector $$z_{z_{aug}}$$.
+The MCE-VAE consists of a four encoder functions. The first is $$q_{z_{aug}}(x)$$ is a 
+deterministic encoder, implemented with ConvNets, that maps from the input $$x$$ to a single vector $$z_{z_{aug}}$$. From there, MCE-VAE factorizes the latent space into 3 latent variables, $$z_c$$, $$z$$, and $$\tau $$, each with its own encoder that maps the entire vector $$z_{aug}$$ to the parameters of a probability distribution. 
+
+The latent variables $$z$$ and $$\tau$$ are represented as Gaussian distributions parameterized by a mean $$\mu$$ and $$\sigma$$. On the other hand, $$z_c$$ is represented as a [mixture of Gaussians](https://en.wikipedia.org/wiki/Mixture_distribution) parameterized by $$\mu$$, $$\sigma$$, and a weight vector $$w$$.
+
+In summary:
+* $$q_{z_c}(z_{aug})$$ maps from $$z_{aug}$$ to a Gaussian distribution parameterized by 

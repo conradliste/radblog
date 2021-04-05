@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Conrad Li's Blog 
+title: Conrad's Blog 
 email: conradliste@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
  The purpose of this site is for me to write about new machine learning papers I

@@ -197,14 +197,43 @@
   }
 }
 
+// Add tag metadata
 .post-meta {
   font-size: $small-font-size;
   color: $grey-color;
+  a.post-tag {
+    border-radius: 5px;
+    border: 1px solid $grey-color;
+    color: $grey-color;
+    padding: 1px 5px;
+    margin-left: 5px;
+    &:hover {
+      border: 1px solid $brand-color;
+      text-decoration: none;
+      color: #ffffff;
+      background: $brand-color;
+    }
+  }
+}
+
+.other-pages {
+  margin-top: $spacing-unit * 0.5;
+  h1 {
+    font-family: 'Open Sans';
+  }
 }
 
 .post-link {
   display: block;
   @include relative-font-size(1.5);
+  font-weight: 700;
+  color: $text-color;
+
+  &:hover {
+    color: $brand-color;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
 
@@ -217,7 +246,7 @@
 }
 
 .post-title {
-  @include relative-font-size(2.625);
+  @include relative-font-size(2.2);
   letter-spacing: -1px;
   line-height: 1;
 
