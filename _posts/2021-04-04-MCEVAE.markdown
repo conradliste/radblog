@@ -67,7 +67,7 @@ deterministic encoder, implemented with ConvNets, that maps from the input $$x$$
 * $$\tau$$ encodes a SE-2 transformation that is applied to the reconstructed input
 
 The latent variables $$z$$ and $$\tau$$ are represented as Gaussian distributions parameterized by a mean $$\mu$$ and $$\sigma$$. However, $$z_c$$ is represented as a [mixture of Gaussians](https://en.wikipedia.org/wiki/Mixture_distribution) parameterized by $$\mu$$, $$\sigma$$, and a weight vector $$w$$. In the paper, since the $$z_c$$
-should encode the class of our input $x$, the dimensions of $$z_c$$ are set to equal
+should encode the class of our input $$x$$, the dimensions of $$z_c$$ are set to equal
 to the number of classes we expect in our input data.
 
 In summary:
