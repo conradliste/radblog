@@ -26,4 +26,8 @@ centered: centers image
 
 ![user_image](/assets/me.jpg# thumbnail centered bordered)
 
- Hello! I am an undergraduate at the University of Texas at Austin studying computer science. I am interested in machine learning, neural networks, and representation learning.
+Hello! I am Conrad and I currently studying Computer Science at the University
+of Texas at Austin. I am interested in machine learning, reinforcement learning,
+and representation learning. I am documenting my notes on research papers in 
+this blog.
+
