@@ -143,6 +143,8 @@ a {
 /**
  * Blockquotes
  */
+
+// Regular blockquotes
 blockquote {
   color: $grey-color;
   border-left: 4px solid $grey-color-light;
@@ -155,6 +157,24 @@ blockquote {
     margin-bottom: 0;
   }
 }
+
+// Blockquote as blog preview snippet
+blockquote.info {
+  color: $grey-color;
+  border-left: 4px solid #bbbbbb;
+  padding-left: $spacing-unit / 2;
+  padding: 5px;
+  @include relative-font-size(0.90);
+  letter-spacing: -1px;
+  background: #f0f0f0;
+  font-style: normal;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+
 
 
 
@@ -269,6 +289,8 @@ table {
   }
 }
 
+
+// Markdown Table for representing article snippet preview
 table.info {
   max-width: 100%;
   border-top: 2px solid $grey-color;

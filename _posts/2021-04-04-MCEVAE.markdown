@@ -7,7 +7,8 @@ date:   2021-04-04 02:33:41 -0500
 tags: vae disentangled-reps
 ---
 
->  Learning disentangled representation of high-dimensional data is essential for solving high-dimensional control problems A hierarchical variational autoencoder that learns to separate invariant and equivariant components
+{:class="info"}
+>  Learning disentangled representations of an agent's is essential for solving high-dimensional control problems. MCE-VAE introduces a hierarchical variational autoencoder that learns to separate invariant and equivariant components of the input space.
 
 <!--excerpt-->
 
