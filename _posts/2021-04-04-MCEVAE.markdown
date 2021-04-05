@@ -38,13 +38,13 @@ tags: vae disentangled-reps
 
 ## Motivations
 
-Variational autoencoders (VAE) extend noraml autoencoders by encoding each input
+Variational autoencoders (VAE) extend normal autoencoders by encoding each input
 $$x$$ as a mean and variance in a low-dimensional latent
 space. Although variational autoencoders (VAEs) have achieved impressive results
 on image generation tasks and more recently 
 [drug synthesis](https://pubs.acs.org/doi/10.1021/acscentsci.7b00572), crafting 
 expressive latent spaces that can encode the structure of the input data remains
-a difficult task. Much of research in VAEs hase been directed toward creating 
+a difficult task. Much of research in VAEs has been directed toward creating 
 *distentangled* latent spaces that encode each feature of $$x$$ into either narrowly
 defined variables or separate dimension of $$z$$. More formally, a vector representation
 is *disentangled*, if it can be decomposed into a number of subspaces, each one of which 
@@ -60,7 +60,7 @@ that learns invariant and equivariant latent representations of dynamic data.
 For clarity, let us assume that the input dataset $$X = \{ x_0, x_1, ....x_N \}$$
 are each $$ 28 \times 28 $$ images from the MNIST digit set.
 The MCE-VAE consists of a four encoder functions. The first is $$q_{z_{aug}}(x)$$ is a 
-deterministic encoder, implemented with ConvNets, that maps from the input $$x$$ to a single vector $$z_{z_{aug}}$$. From there, MCE-VAE factorizes the latent space into 3 latent variables, $$z_c$$, $$z$$, and $$\tau $$, each with its own encoder that maps the entire vector $$z_{aug}$$ to the parameters of a probability distribution.
+deterministic encoder, implemented with ConvNets, that maps from the input $$x$$ to a single vector $$z_{z_{aug}}$$. From there, MCE-VAE factorizes the latent space into 3 latent variables, $$z_c$$, $$z$$, and $$\tau $$, each with its own encoder that maps the entire vector $$z_{aug}$$ to the parameters of a probability distribution. 
 
 * $$z_c$$ encodes information about the class of the input (e.g. the digit)
 * $$z$$ encodes variations in the input space such as color or bluriness
@@ -81,7 +81,7 @@ In summary:
 * $$q_{\tau}(z_{aug})$$ maps from $$z_{aug}$$ to a Gaussian distribution parameterized by a mean $$\mu_{\tau}$$ and variance $$\sigma_{\tau}$$
 
 # Decoding the latent variables
-Now that we encoded our inputs into three factored latent variables, we now need a way to decode preserving equivariance and invariance. MCE-VAE has 2 decoder functions. The invariance decoder maps the catgorical latent variable $$z_c$$ and variantional latent variable $$z$$ back to a canonical reconstruction $$\tilde{x}$$. The equivariant decoder maps the canonical reconstuction $$\tilde{x}$$ and $$\tau$$ to the full reconstructed input $$\hat{x}$$ by applying an SE2 transformation to $$\tilde{x}$$. In this way, we learn the attributes of the input that are invariant to SE2 transformation by encoding them in $$z_c$$ and $$\tau$$. We can then train MCE-VAE by maximizing the evidence lower bound [ELBO](https://en.wikipedia.org/wiki/Evidence_lower_bound). Note that since we have 3 probabilistic encoders, we also have 3 corresponding KL divergences in addition to the reconstruction loss.
+Now that we encoded our inputs into three factored latent variables, we now need a way to decode back to the input space while preserving equivariance and invariance of our factored latent variables. MCE-VAE has 2 decoder functions. The invariance decoder maps the catgorical latent variable $$z_c$$ and variantional latent variable $$z$$ back to a canonical reconstruction $$\tilde{x}$$. The equivariant decoder maps the canonical reconstuction $$\tilde{x}$$ and $$\tau$$ to the full reconstructed input $$\hat{x}$$ by applying an SE2 transformation to $$\tilde{x}$$. In this way, we learn the attributes of the input that are invariant to SE2 transformation by encoding them in to $$z_c$$ and $$z$$. We can then train MCE-VAE by maximizing the evidence lower bound [ELBO](https://en.wikipedia.org/wiki/Evidence_lower_bound). Note that since we have 3 probabilistic encoders, we also have 3 corresponding KL divergences in addition to the reconstruction loss.
 
 The diagram below summarizes the MCE-VAE.
 
