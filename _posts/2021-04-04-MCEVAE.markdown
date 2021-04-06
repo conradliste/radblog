@@ -32,12 +32,12 @@ tags: vae disentangled-reps
 | $$\tau$$ | Transformational latent vector |
 |$$\tilde{x}$$ | Invariant Canonical Reconstruction |
 | $$\hat{x}$$ | Final Transformed Reconstruction|
-| $$q_{z_{aug}}(x)$$ | **Deterministic** encoder: $$x \rightarrow z_{aug}$$ |
-| $$q_{z_c}(z_{aug})$$ | **Probabilistic** encoder: $$z_{aug} \rightarrow \mu_{z_c}$$, $$\sigma_{z_c}$$, and $$w$$ |
-| $$q_{z}(z_{aug})$$ | **Probabilistic** encoder: $$z_{aug} \rightarrow \mu_{z}$$ and $$\sigma_{z}$$
-| $$q_{\tau}(z_{aug})$$ | **Probabilistic** encoder: $$z_{aug}$$ $$\rightarrow$$ $$\mu_{\tau}$$ and $$\sigma_{\tau}$$ |
-| $$d_{inv}(z_c, z)$$ | **Probabilistic** decoder: $$z_c$$ and $$z$$ $$\rightarrow$$ $$\tilde{x}$$ |
-| $$d_{equi}(\tau, \tilde{x})$$ | **Probabilistic** decoder: $$\tau$$ and $$\tilde{x}$$ $$\rightarrow$$ $$\hat{x}$$ |
+| $$E(x)$$ | **Deterministic** encoder: $$x \rightarrow z_{aug}$$ |
+| $$q(z_c \mid z_{aug})$$ | **Probabilistic** encoder: $$z_{aug} \rightarrow \mu_{z_c}$$, $$\sigma_{z_c}$$, and $$w$$ |
+| $$q(z \mid z_{aug})$$ | **Probabilistic** encoder: $$z_{aug} \rightarrow \mu_{z}$$ and $$\sigma_{z}$$
+| $$q(\tau \mid z_{aug})$$ | **Probabilistic** encoder: $$z_{aug}$$ $$\rightarrow$$ $$\mu_{\tau}$$ and $$\sigma_{\tau}$$ |
+| $$d(\tilde{x} \mid z_c,\ z)$$ | **Probabilistic** decoder: $$z_c$$ and $$z$$ $$\rightarrow$$ $$\tilde{x}$$ |
+| $$d(\hat{x} \mid \tau,\ \tilde{x})$$ | **Probabilistic** decoder: $$\tau$$ and $$\tilde{x}$$ $$\rightarrow$$ $$\hat{x}$$ |
 | ---------- |  ---------|
 
 ## Motivations
@@ -61,7 +61,7 @@ that learns features of the input data that are invariant to a user-specified Li
 # Encoding the Input
 For clarity, let us assume that the input dataset $$X = \{ x_0, x_1, ....x_N \}$$
 are each $$ 28 \times 28 $$ images from the MNIST digit set.
-The MCE-VAE consists of a four encoder functions. The first is $$q_{z_{aug}}(x)$$ is a 
+The MCE-VAE consists of a four encoder functions. The first is $$E(z_{aug})$$ is a 
 deterministic encoder, implemented with ConvNets, that maps from the input $$x$$ to a single vector $$z_{z_{aug}}$$. From there, MCE-VAE factorizes the latent space into 3 latent variables, $$z_c$$, $$z$$, and $$\tau $$, each with its own encoder that maps the entire vector $$z_{aug}$$ to the parameters of a probability distribution. 
 
 * The **categorical** latent variable, $$z_c$$, encodes information about the class of the input (e.g. the digit)
@@ -74,17 +74,34 @@ to the number of classes we expect in our input data. Intuitively, each dimensio
 
 In summary:
 
-* $$q_{z_{aug}}(x)$$ maps from $$x$$ deterministically to $$z_{aug}$$
+* $$E(x)$$ maps from $$x$$ deterministically to $$z_{aug}$$
 
-* $$q_{z_c}(z_{aug})$$ maps from $$z_{aug}$$ to a mixture of Gaussians parameterized by mean $$\mu_c$$, variance $$\sigma_c$$, and weight vector $$w$$
+* $$q(z_c \mid z_{aug})$$ maps from $$z_{aug}$$ to a mixture of Gaussians parameterized by mean $$\mu_c$$, variance $$\sigma_c$$, and weight vector $$w$$
 
-* $$q_{z}(z_{aug})$$ maps from $$z_{aug}$$ to a a Gaussian distribution parameterized by a mean $$\mu_z$$ and variance $$\sigma_z$$
+* $$q(z \mid z_{aug})$$ maps from $$z_{aug}$$ to a a Gaussian distribution parameterized by a mean $$\mu_z$$ and variance $$\sigma_z$$
 
-* $$q_{\tau}(z_{aug})$$ maps from $$z_{aug}$$ to a Gaussian distribution parameterized by a mean $$\mu_{\tau}$$ and variance $$\sigma_{\tau}$$
+* $$q(\tau \mid z_{aug})$$ maps from $$z_{aug}$$ to a Gaussian distribution parameterized by a mean $$\mu_{\tau}$$ and variance $$\sigma_{\tau}$$
 
 # Decoding the Latent Variables
-Now that we encoded our inputs into three factored latent variables, we now need a way to decode back to the input space while preserving equivariance and invariance of our factored latent variables. MCE-VAE has 2 decoder functions. The invariance decoder $$d_{inv}(z_c, z)$$ maps the catgorical latent variable $$z_c$$ and variantional latent variable $$z$$ back to a invariant canonical reconstruction $$\tilde{x}$$. The equivariant decoder $$d_{equi}(\tilde{x}, \tau)$$ maps the canonical reconstruction $$\tilde{x}$$ and $$\tau$$ to the full reconstructed input $$\hat{x}$$ by applying the SE2 transformation encoded by $$\tau$$ to $$\tilde{x}$$. In this way, we learn the attributes of the input that are invariant to SE2 transformation by encoding them in to $$z_c$$ and $$z$$. We can then train MCE-VAE by maximizing the evidence lower bound [ELBO](https://en.wikipedia.org/wiki/Evidence_lower_bound). Note that since we have 3 probabilistic encoders, we also have 3 corresponding KL divergences in addition to the reconstruction loss.
+Now that we encoded our inputs into three factored latent variables, we now need a way to decode back to the input space while preserving equivariance and invariance of our factored latent variables. MCE-VAE has 2 decoder functions. The invariance decoder $$d(\tilde{x} \mid z_c,\ z)$$ maps the catgorical latent variable $$z_c$$ and variantional latent variable $$z$$ back to a invariant canonical reconstruction $$\tilde{x}$$. The equivariant decoder $$d(\hat{x} \mid \tau,\ \tilde{x})$$ maps the canonical reconstruction $$\tilde{x}$$ and $$\tau$$ to the full reconstructed input $$\hat{x}$$ by applying the SE2 transformation encoded by $$\tau$$ to $$\tilde{x}$$. In this way, we learn the attributes of the input that are invariant to SE2 transformation by encoding them in to $$z_c$$ and $$z$$. 
 
+
+## Training MCE-VAE
+Following other variational autoencoder architectures, we can train MCE-VAE by maximizing the evidence lower bound [ELBO](https://en.wikipedia.org/wiki/Evidence_lower_bound). Note that since we have 3 probabilistic encoders, we also have 3 corresponding KL divergences in addition to the reconstruction loss. The full ELBO is 
+
+$$
+ELBO = \mathbb{E}[log\ p(x \mid z_c, z, \tau)] - KL(q(z_c \mid x) \mid \mid p(z_c)) - KL(q(z \mid x) \mid \mid p(z)) - KL(q(\tau \mid x) \mid \mid p(\tau))
+$$
+
+* $$\mathbb{E}[log\ p(x \mid z_c, z, \tau)]$$ is the reconstruction term which is maxmized by minimizing a reconstruction loss.
+
+* $$KL(q(z_c \mid x) \mid \mid p(z_c))$$ is the KL divergence between $$q(z_c \mid x)$$ and its Gaussian mixture prior $$p(z_c)$$
+
+* $$KL(q(z \mid x) \mid \mid p(z)) $$ is the KL divergence between $$q(z \mid x)$$ and its Gaussian prior $$p(z)$$
+
+* $$KL(q(\tau \mid x) \mid \mid p(\tau))$$ is the KL divergence between $$q(\tau \mid x)$$ and its Gaussian prior $$p(\tau)$$
+
+## Diagram
 
 The diagram below summarizes the MCE-VAE.
 
